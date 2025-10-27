@@ -39,9 +39,137 @@ Use setInterval to call the nextImage() function at regular intervals.
 Clean up the interval when the component unmounts using clearInterval to prevent memory leaks.
 
 ## PROGRAM
+# HTML
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pure JavaScript Image Carousel</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #222;
+      margin: 0;
+    }
+
+    .carousel {
+      position: relative;
+      width: 600px;
+      height: 350px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .carousel img.active {
+      display: block;
+    }
+
+    button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.6);
+      border: none;
+      font-size: 24px;
+      padding: 8px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: white;
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+  </style>
+</head>
+<body>
+
+  <div id="carousel"></div>
+
+  <script>
+    // --- Image sources ---
+    const imageSources = [
+      "https://picsum.photos/id/1018/600/350",
+      "https://picsum.photos/id/1025/600/350",
+      "https://picsum.photos/id/1033/600/350",
+      "https://picsum.photos/id/1041/600/350"
+    ];
+
+    // --- Create carousel elements ---
+    const carousel = document.getElementById('carousel');
+    carousel.classList.add('carousel');
+
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = '❮';
+    prevBtn.className = 'prev';
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = '❯';
+    nextBtn.className = 'next';
+
+    // --- Add images ---
+    imageSources.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src;
+      if (i === 0) img.classList.add('active');
+      carousel.appendChild(img);
+    });
+
+    // Add buttons
+    carousel.appendChild(prevBtn);
+    carousel.appendChild(nextBtn);
+
+    // --- JS functionality ---
+    const images = carousel.querySelectorAll('img');
+    let index = 0;
+
+    function showImage(n) {
+      images.forEach(img => img.classList.remove('active'));
+      images[n].classList.add('active');
+    }
+
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % images.length;
+      showImage(index);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + images.length) % images.length;
+      showImage(index);
+    });
+
+    // Auto-slide every 3 seconds
+    setInterval(() => {
+      index = (index + 1) % images.length;
+      showImage(index);
+    }, 3000);
+  </script>
+
+</body>
+</html>
+
+```
 
 
 ## OUTPUT
+<img width="1285" height="943" alt="image" src="https://github.com/user-attachments/assets/4ae35322-cd70-443e-a734-e3c8418e51d9" />
+
+<img width="1274" height="931" alt="image" src="https://github.com/user-attachments/assets/04e12b4a-01d0-4541-9a80-ac047e44cf11" />
 
 
 ## RESULT
